@@ -1,0 +1,9 @@
+Vusers: Replica of a real user which mimics the real user behaviour.
+Bottleneck : if a resource restrict to perform that issue is a bottleneck.
+Scalability : scaling up or scaling down the capacity of the system whenever needed.
+Latency: is the time taken to move the datapacket from source to destination.
+Request Latency: time taken to reach the data from client to server.
+Response latency: time taken to reach the data packets from server back to client.
+Round trip latency: Request latency + Response latency.
+
+
