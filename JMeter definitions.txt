@@ -16,9 +16,91 @@ Think time: simulated time delay between two consequetive actions or requests to
 Peak time: anticipated busiest time of the server.
 Peak load: (TTP: time to peak) highest expected user load on a sarver
 
+
+***
 Performance testing life cycle or process:
 
 it includes 11 steps:
+
 1. Requiremt gathering and analysis
 
-2. 
+in this phase we identify the performance golas such as response time, throuhput time, resource utilization by refering the BRS.
+we understand the application archituture and infrastruture.
+analyse the expected user patterns/use cases and workload models no of users load, type of tests, gegraphic location using the app.
+
+2. planning and design
+
+in this phase we define testing scope which is under scope which is out of scope.
+objectives of testing and test strategy
+testing approach we will be follwing
+define the workload models and environment setup based on user behaviour.
+identifying the risk, timeline, resources required.
+
+3. Environment setup:
+
+we make sure comparing the PROD and Testbeds which should as match as close to PROD environment.
+necessary hardware and software and network we mirror with PROD env.
+
+4. Tool selection
+
+depend on the sills of resources
+scope
+extension
+open source depend on these we choose tool
+
+5. Test design
+untit test
+integration test
+whole scenario testing
+and verifying the test accuracy
+test script generation depend on the real usage patters and senarios.
+oprimiize the script using parametrzation and corelation.
+
+6. Test execution
+
+we do execute the scripts
+
+7. Monitoring and analyis 
+
+collect and monitor the KPI's such as response time, avarage time, resource utilization and objectives as part of SLA
+identifying the bottle necks
+
+8. Tuning & Optimization
+
+Dev gives fix to tune apps
+
+9. Retest:
+
+we perform retest to verify the fix 
+we also perform regression to check the overall helath of existing system
+
+10. Reports:
+
+we generate and create reports
+
+11. Continous monotoring
+
+we do moniotor the helath and report if any issues found
+
+***
+how to read a large json body for a POST, PUT, PATCH requests.
+
+we create the json external file and keep the json bosy into it.
+in the request body using ${__FileToString(pathof the file),(encryptionoptional),(variable optional)}
+we provide the fuction then it will read from the file through function.
+
+***
+while doing Load test with 4K threads within 1hr we hold for 66 users per min instead of finishing the 66 users in seconds?
+
+we use arrival thread group to achieve this
+
+Testpalan > arrival thread group > arrivals/min or targetrate/min = 66 , Rampup = 1min, Rampup step count= 10, Hold traget rate time in min =60
+
+it will launch 66 users per min and it holds for 1 hr.
+
+***
+how to corelate session ID or customer token ID while authenticating?
+
+from one of the login request response we will see session id generated > we store the ID by writing a regexpression session_ID="(.*?)" > token as variable name so > from the next post requests we use the ${token} variable to post and use the same session ID stored cause it is dynamic in nature every logout it will change
+
+***
