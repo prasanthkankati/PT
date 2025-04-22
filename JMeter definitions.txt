@@ -5,5 +5,20 @@ Latency: is the time taken to move the datapacket from source to destination.
 Request Latency: time taken to reach the data from client to server.
 Response latency: time taken to reach the data packets from server back to client.
 Round trip latency: Request latency + Response latency.
+Throughput: Number of trnscations/requests/data processed by system during the given time frame. it might be requests/sec (RPS) or KB/sec or transcations/sec (TPS) depends on the context.
+Response time: time taken to receive the response after the rquest made. it includes time taken to send the reqest + processing by system + sending back to client says as round trip response time.
+Saturation: peak point at which the maximum utilization of a resource occurs.
+memory utilaztaion: percentage of the memory consumption to process a request.
+CPU utilization: percentage of CPU computing power cosumed to process a request.
+Concurent users: multiple usres are using the system at the same time but sending diffrent requests/performing diffrent tasks.
+Simultationious users: multiple users ar3e using the system at the same time and also sending the same requests or doinsame task.
+Think time: simulated time delay between two consequetive actions or requests to mimic the real user behaviour.
+Peak time: anticipated busiest time of the server.
+Peak load: (TTP: time to peak) highest expected user load on a sarver
 
+Performance testing life cycle or process:
 
+it includes 11 steps:
+1. Requiremt gathering and analysis
+
+2. 
