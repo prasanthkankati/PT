@@ -13,8 +13,8 @@ jmeter function helper- can choose the function and generate the syntax and use 
 jmtere help- opens the jmeter documentation
 -
 Thread grop - using it we can define the virtual users(load), how long they run(duration),  we can use thread lifetime to define how long the load should be on hold.
-
-
+	concurency thread group
+  stepping threadgroup supports throupit shaping timer where we can define RPS nog the users. rampup tps, hold rps,rampdown rps.
 ***Jmeter-Listners***
 
 Listners- shows the request and reponse info like payload and reponse with diffrent metrics depend on the listerner we choose 
