@@ -56,6 +56,70 @@ Json assertion:
 
 defaultly wont be there so we have to add a plugin-json to write a json expression user.id.job = "engineer" if it matches it pass.
 
+***Jmeter Variables***
+Variable stores the values which are defined by user.
+syntax: ${userName}
+Types: 
+1. Local variables: set under the thread level using config elements > user defined variables
+2. Global variables: defined in the testplan level 
+local variables override the global variables.
+
+
+
+***Jmeter Functions***
+
+functions are values that can populate fields of samplers or other elements
+
+Syntax: ${__functionName(),(),()}
+${_log"info"}
+${__threadNum}
+${__threadGroupName}
+${__intSum(1,5) value}
+${__time (dd MM YYYY)}
+${__random(6,abcdefx)}
+${__machineName}
+${__machineIP}
+${__StringToFile}
+${__StringFromFile}
+
+controll users rampup and down from the CLI jmeter -n -t "path to jmx" -l "results.jtl"-jusers=10 -jrampup=5 -loopcount=5 
+${__p(users,1)}
+${__p(rampup,1)}
+${__p(rampdown,1)}
+
+
+*** DistributedLoad Master-Slave***
+
+Master will controll the work nodes. 
+jmeter should be installed on all the machine and the version should be same
+java should be installed in all the machines
+all the machines should be in the same network
+then > in the master machine jmeter properties remote machines and rmi section add the salve IP's and comment the current IP of the master.
+
+once its done > start the server and give the command to connect slave IP> it shows conncted > open jmeter remote run the test plan or you can run the jmx by providing -r IP in the test run command.
+
+***Basic Autherization***
+
+testplan > threadgroup > sampler > config eklement > HTTP AUTHORIZATION MANGER > add base url , username, password, type basic 
+
+***Thread***
+Programm contain a process and it process includes threads.
+multiple proceess includes multiple threads.
+monotoring thread helath is required to identify bottlenecks.
+if high cpu utilization or high elapsed time than expected we may take thread dump to analyse the thread status
+
+usually thread status are: running / blocked / waiting if not then they might struck, stall on, deadlock, high cpu consumption, contention (multiple threads waiting for resources)
+
+with 5 sec gap we have to collect the thread dump
+
+ways to collect:
+1. we can directly collect the thread dump if we have access to the app server.
+using jstack(Jstack <PID> threaddump.txt ),visual VM
+2. if we dont have access then infra team will install agents on the server and then the agent sends the thread health to monotoring server and using url we can get the detailed metrics in a dashboard.
+
+we can do the thread dump analysis manually by observing the cpu utilization time and status or we can use the tools like fast thread by uploading the threaddump file in the tools.
+
+
 
 ***Metric definitions***
 
