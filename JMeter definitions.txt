@@ -14,6 +14,9 @@ jmtere help- opens the jmeter documentation
 -
 Thread grop - using it we can define the virtual users(load), how long they run(duration),  we can use thread lifetime to define how long the load should be on hold.
 
+
+***Jmeter-Listners***
+
 Listners- shows the request and reponse info like payload and reponse with diffrent metrics depend on the listerner we choose 
 
 view results tree listner(not recommonded only use for debugging consumes much resources)- shows the rquest body nd reponse body, response headers, load time, connect time, message, status code.
@@ -21,14 +24,41 @@ view results tree listner(not recommonded only use for debugging consumes much r
 View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
 
 Summary report:
+
 View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
 
 grapgh results: avarage, median, throughput, deviation.
 
 simple data writer (for highload performance testing): if we upload the csv file in this listener it will append the results to it after the run.
 
+assertion results listner: this listener shows the asserion results passed or failed
 
 ***
+
+*** Jmeter-Assertions***
+
+Assertion : it is check to valiadte the jmeter response
+
+types: 
+
+Response assertion: check the response message, status code, response text by comapring the actual and expected values.
+
+Duration assertion: checks the response duartion by provideing expected value in the assertion config part
+
+size assertion: checks the size in bytes and copare the expected size with actual
+XML assertion: checks if the response parsed into well formated xml format
+
+HTML assertion: jmeter response is formates using interner jmeter HTML parser so it checks for any errors or warnings exists in the HTML response parsed like broken tags, incompleted elemenents, structural errors. so we will provide threashhold error and warnings counts if actual error and warnings are more than expcted or provided it fails.
+
+Xpath assertion: it checksfor the nodes in the response which matches the provided xpath we can also store the matchings into afile using this, it no matches assertion fails.
+
+Json assertion:
+
+defaultly wont be there so we have to add a plugin-json to write a json expression user.id.job = "engineer" if it matches it pass.
+
+
+***Metric definitions***
+
 
 Vusers: Replica of a real user which mimics the real user behaviour.
 Bottleneck : if a resource restrict to perform that issue is a bottleneck.
@@ -39,8 +69,12 @@ Response latency: time taken to reach the data packets from server back to clien
 Round trip latency: Request latency + Response latency.
 Throughput: Number of trnscations/requests/data processed by system during the given time frame. it might be requests/sec (RPS) or KB/sec or transcations/sec (TPS) depends on the context.
 Response time: time taken to receive the response after the rquest made. it includes time taken to send the reqest + processing by system + sending back to client says as round trip response time.
-Average response time: total response time % number of samplers.
+Average response time: total response time % number of samplers. 3 sampelers 1 sec 3sec 1sec % 3 =1.66 if it is low performance is high.
 median response time: middle value before which 50% of the responses were collected and 50% were late to this value.
+standard deviation: indicate variation in the response time. it should be close to the average median for good performance should not too low or high to the median line.
+
+starndard deviation population = sqrt of i=1 to N (xi-mean)2%N 1+2+3/3=2 2-1=1sqare =1 > like tat 3-1sr=2 +1-1sqr%3=3/3=0
+
 90% line ex:320ms: 90% of the sampler responses reached before 320ms and remining are received after 320ms
 95% line: 95% of the sampler responses reached before 320ms and remining are received after 320ms
 99% line: 99% of the sampler responses reached before 320ms and remining are received after 320ms
@@ -164,3 +198,20 @@ filterresults.bat --output-file"path/filteredresults.csv" --input-file"path/resu
 we have to make sure the cmdrunnerjar version should be same in the filterresults.bat file otherwise it throws error.
 
 like the same way we can filter patterns like specific http requests using reg expression in the same command including.
+
+
+*** monitor server metrics using perfmon plugin ***
+
+1. install pluginmanager if not 
+2. install perfmon plugin in jmeter
+3. install serverAgent on the target device and start the agent before running the jmater test so that it listen the port 4444
+4. add perfmon metrics collector lister which shows only when plugin added in jmeter
+5. in the listner add IP of the traget device and port 4444 add metrics like CPU, memory, network, disk I/o 
+6. run the listener so it collects the server metrics we can compare with native taskmanager to check and then export.
+7, we can also combine both jmeter resukts and sever metrics performon collector results and generate report unsing influx db + gafana
+
+
+
+
+
+
