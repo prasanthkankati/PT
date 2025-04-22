@@ -1,3 +1,18 @@
+*** Jmeter Tool UI***
+jmeter-template: adds a default structure to the testplan priorly so depend on the requirement we can choose the corresponding template. recording, recording with think time
+jmeter-toggle- enable and diables the selected elements
+jmeter start- start the testplan and executes
+jmeter start-no puse - ignore all the timers and execute the tests without any pause.
+jmeter stop- abruput ending- means-forcefully stop execution
+jmeter shutdown button- gracefull ending.means- once the current thread execution completed then it would stop
+jmeter clear button- clears the current element 
+jmeter clear all button - clears all the elements and refreshes.
+jmeter search- can search for elements
+jmeter reset serach- erases search
+jmeter function helper- can choose the function and generate the syntax and use from it
+jmtere help- opens the jmeter documentation
+***
+
 Vusers: Replica of a real user which mimics the real user behaviour.
 Bottleneck : if a resource restrict to perform that issue is a bottleneck.
 Scalability : scaling up or scaling down the capacity of the system whenever needed.
@@ -17,8 +32,8 @@ Peak time: anticipated busiest time of the server.
 Peak load: (TTP: time to peak) highest expected user load on a sarver
 
 
-***
-Performance testing life cycle or process:
+
+*** Performance testing life cycle or process: ***
 
 it includes 11 steps:
 
@@ -104,3 +119,20 @@ how to corelate session ID or customer token ID while authenticating?
 from one of the login request response we will see session id generated > we store the ID by writing a regexpression session_ID="(.*?)" > token as variable name so > from the next post requests we use the ${token} variable to post and use the same session ID stored cause it is dynamic in nature every logout it will change
 
 ***
+
+How to load ramp up period of 60 seconds, and steady state load for 60 sec  nd rampdown 60 seconds and filter only the steadystte results workloadmodel?
+
+jmeter plugins > install filterresults plugin.
+
+
+Testplan > ultimate thread group > thread count 10 , Startup time 60 sec, shtdowntime 60 sec, hold load for 60 sec > results tree > save jmx run in cl mode
+
+jmeter -n -t "path to the jmx" -l "path to the results.jtl"
+
+results.jtl will be generated > now, we should keep the terminal directory in to jmeter bin and run the follwing command to trim the first 60 sec and last 60 sec from results.
+
+filterresults.bat --output-file"path/filteredresults.csv" --input-file"path/results.jtl" --startoffset-60 --endoffset-60
+
+we have to make sure the cmdrunnerjar version should be same in the filterresults.bat file otherwise it throws error.
+
+like the same way we can filter patterns like specific http requests using reg expression in the same command including.
