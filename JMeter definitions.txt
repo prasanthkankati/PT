@@ -1,5 +1,5 @@
 *** Jmeter Tool UI***
-jmeter-template: adds a default structure to the testplan priorly so depend on the requirement we can choose the corresponding template. recording, recording with think time
+jmeter-template: (pre configured test plan or a structure)adds a default structure to the testplan priorly so depend on the requirement we can choose the corresponding template. recording, recording with think time
 jmeter-toggle- enable and diables the selected elements
 jmeter start- start the testplan and executes
 jmeter start-no puse - ignore all the timers and execute the tests without any pause.
@@ -11,6 +11,23 @@ jmeter search- can search for elements
 jmeter reset serach- erases search
 jmeter function helper- can choose the function and generate the syntax and use from it
 jmtere help- opens the jmeter documentation
+-
+Thread grop - using it we can define the virtual users(load), how long they run(duration),  we can use thread lifetime to define how long the load should be on hold.
+
+Listners- shows the request and reponse info like payload and reponse with diffrent metrics depend on the listerner we choose 
+
+view results tree listner(not recommonded only use for debugging consumes much resources)- shows the rquest body nd reponse body, response headers, load time, connect time, message, status code.
+
+View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
+
+Summary report:
+View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
+
+grapgh results: avarage, median, throughput, deviation.
+
+simple data writer (for highload performance testing): if we upload the csv file in this listener it will append the results to it after the run.
+
+
 ***
 
 Vusers: Replica of a real user which mimics the real user behaviour.
@@ -22,6 +39,17 @@ Response latency: time taken to reach the data packets from server back to clien
 Round trip latency: Request latency + Response latency.
 Throughput: Number of trnscations/requests/data processed by system during the given time frame. it might be requests/sec (RPS) or KB/sec or transcations/sec (TPS) depends on the context.
 Response time: time taken to receive the response after the rquest made. it includes time taken to send the reqest + processing by system + sending back to client says as round trip response time.
+Average response time: total response time % number of samplers.
+median response time: middle value before which 50% of the responses were collected and 50% were late to this value.
+90% line ex:320ms: 90% of the sampler responses reached before 320ms and remining are received after 320ms
+95% line: 95% of the sampler responses reached before 320ms and remining are received after 320ms
+99% line: 99% of the sampler responses reached before 320ms and remining are received after 320ms
+minimum response time: it is minimum time taken to get the rsponse 
+maximum response time: it is the maximum time taken to get the response.
+received KB, sent KB: kb received and sent.
+Rampup time: gradually launches the users from 0 to its maximum users to mimic the real time load and to avoid spikes and crashes.
+Rampdown: gradually push back the load to 0 to mimic the real time load.
+steadystate: this is whre we can collect the metrics as the defined peak load holds for the given time.
 Saturation: peak point at which the maximum utilization of a resource occurs.
 memory utilaztaion: percentage of the memory consumption to process a request.
 CPU utilization: percentage of CPU computing power cosumed to process a request.
