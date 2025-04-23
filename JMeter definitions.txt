@@ -12,9 +12,28 @@ jmeter reset serach- erases search
 jmeter function helper- can choose the function and generate the syntax and use from it
 jmtere help- opens the jmeter documentation
 -
-Thread grop - using it we can define the virtual users(load), how long they run(duration),  we can use thread lifetime to define how long the load should be on hold.
-	concurency thread group
-  stepping threadgroup supports throupit shaping timer where we can define RPS nog the users. rampup tps, hold rps,rampdown rps.
+***Thread grop***
+
+- using it we can define the virtual users(load), how long they run(duration),  we can use thread lifetime to define how long the load should be on hold.
+concurency thread group
+stepping threadgroup supports throupit shaping timer where we can define RPS nog the users. rampup tps, hold rps,rampdown rps.
+
+stepping threadgroup is suitable for scalability testing..
+rampup and rampdown will be launched as steps
+
+***Architecture***
+microservices based architecture : a big app will be hosted devided into its services and hosted individually.
+
+for mobile dialer app: 
+
+contacts service
+messages service
+serach service
+voicemail service
+AI transcription service
+
+
+
 ***Jmeter-Listners***
 
 Listners- shows the request and reponse info like payload and reponse with diffrent metrics depend on the listerner we choose 
@@ -102,6 +121,12 @@ once its done > start the server and give the command to connect slave IP> it sh
 
 testplan > threadgroup > sampler > config eklement > HTTP AUTHORIZATION MANGER > add base url , username, password, type basic 
 
+
+***post processing elements*** mostly used for corelation
+1. json extractor - we will copy the body of previous response and paste it in the json formatter > we will identify the path of an element text and store it in a variable to use in subsequent requests. json path expression may look like $data.[0]id.first_name
+
+2. regular expression extractor
+
 ***Thread***
 Programm contain a process and it process includes threads.
 multiple proceess includes multiple threads.
@@ -119,7 +144,30 @@ using jstack(Jstack <PID> threaddump.txt ),visual VM
 
 we can do the thread dump analysis manually by observing the cpu utilization time and status or we can use the tools like fast thread by uploading the threaddump file in the tools.
 
+***Heap***
+it is a memory occumpied by the object and its references.
+GC: garabage collector it is a process or program to clear or kill the unused objects so that there will be a memory for new objects.
 
+common heap errors: 
+java.lang.ouofMemoryError.java heap: due to the full of heap there will be no space for new objects.
+memory leak: unused objects refrence still exist so the heap will be high
+
+when to take heapsnapshot: outofmemory and low mmory performance, testing new programmes, lags, suggle case.
+
+how to take: we collect this on server side as it hosts the app.
+using jcmd command:
+jcmd jps: give the process id
+jcmd pid GC.heapdump.txt collects the heap. jdk should be installed.
+using jmap command:
+jmap -dump:live, format=b, file="path//.heapdump.prof 956(PID)
+
+if you are confused using commands JvisualVM is the way we can capture both thread dump and heap dump directly running the process. it will export the file of dumps. just right click on process riunning under visualvm > and click on thread dump or heap dump.
+
+we can profile the heap dump file by exporting it in to eclipse memory anayliser EMAT and it auto triggers and shows the heap details typr of error, shallow heap, retain heap all details.
+
+***challenge you have faced and how to solve it***
+
+While working with NMS project it holds 1 lack user base the maximum concurent and simulatanious users were alwsys below 2000 but at the month end to download the electricity usage statement and billing scenarios there was a very low reponse time then we analysed the cause what scenarios are affecting the performance then we modified the critical scenarios and looked logs from all the app, web, db all are working fine but there is an issue in the DB server cpu utilization and dynatrace also triggred davis AI shown the logs then we collected and raised bug with trace so dev fixed and we retested like this we have optimized some scenarios and finally the app was stable till now.
 
 ***Metric definitions***
 
@@ -273,6 +321,45 @@ like the same way we can filter patterns like specific http requests using reg e
 5. in the listner add IP of the traget device and port 4444 add metrics like CPU, memory, network, disk I/o 
 6. run the listener so it collects the server metrics we can compare with native taskmanager to check and then export.
 7, we can also combine both jmeter resukts and sever metrics performon collector results and generate report unsing influx db + gafana
+
+***interview questions***
+
+
+performance testig: it is NFT where we can assess the system stability, scalability, speed under diffrent realistic user load conditions so that by collecting the server health matrics we can identify the bottlenecks and tune the app to optimize the user experience.
+
+Load testing : its a type of testing we always perform under anticipated or expected/normal load for example if a system is having the load of 1000 conc users we do test in that borders only 500-1000 users. 
+
+stress testing: testing the system beyond the normal load to identify the breaking point. with 1500 users if normal load is 1000 users. if it perfroms well with 1500 users we will add another step of load with 1800 then it still performs well we test with 2k users. this is to identify the system stability limmits and future growth.
+
+endurance/soak testing: to identify the memory leaks and longrun system helath we do provide the normal load only buut with longer hours like 8-12 or 24hrs. to check heap and thred behaviour along with server health this is to assess the effeciency under longer run.
+
+scalability testing: to assess the system scaling behaviour its scaling or not for unexexpected load.
+
+voulme testing: it will be tested with huge data on server to check how it is handeling
+
+Benchmark testing: we only define the benchmarks like users, response time, throughput then we apply load according to it.
+
+
+what are diffrent type of bittlenecks:
+
+Network badwidth: slow or overused network causes delay in client-server communication.
+CPU Overload: for heavy tasks and ineffecient processing causes slow processing and response time.
+Memory lock/shoratge: unorganized memory causes slow performance.
+DISk i/o bottle neck: slow read and write operations rate degrades performance.
+cahing strategy: frequently used data is not defined then it puts load on db and quiries evrytime causes slow performance.
+Contention: multiple objects are waiting for same resources causes locking causes dead lock.
+poor garbage collection: causes low performance in long run.
+poor threading mechanisim: scalability will be slow
+
+
+
+
+
+
+
+
+
+
 
 
 
