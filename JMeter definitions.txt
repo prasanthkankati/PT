@@ -354,6 +354,20 @@ poor threading mechanisim: scalability will be slow
 
 
 
+TTFB: 
+Time to First Byte (TTFB): DNS lookup time+connection time+processing time.
+Amount of time it takes for a user's web browser to receive the first byte of data from the
+server after making.
+
+Environment Differences
+Production: 8-node server cluster, high-speed network, dedicated databases.
+Test: 2-node server cluster, lower-speed network, shared databases.
+
+
+
+
+
+
 
 
 
