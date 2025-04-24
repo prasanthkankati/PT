@@ -83,6 +83,89 @@ Types:
 2. Global variables: defined in the testplan level 
 local variables override the global variables.
 
+***Jmeter controllers***
+
+if controller:
+
+the child elemenst under this will be executed whwne the given conditiojn in the groovy is true. other wise it will be fails. this we can use to faiul next requests if the login request itseld is failed.
+
+Transcation controller:
+
+this we can use to summarize the scenario. if a scenario having 3 steps or 3 reueasts under a transcation controller then aggreage or ssummary reprot listener will show the overall scenario metrics.
+
+loop controller:
+
+it will loop the child samplers under it with the execution times/loop times given to the loop controller. if a csv has 50 user and password user data we can give 50 times to the reuest using loop controller
+
+while controller:
+to iterate number of times deoends on a condition:'
+under while controller if we send a HTML link parser it will execute all the links.
+
+also if you define a variable count 0
+and in the controller if you write a groovy function
+${__groovy(vars.get("count") get as int<=10)}
+it will run 10 times
+
+critical section controller:
+execute one after anothe thread which maintains syncranization which is critical in testing. if 100 users writing a csv file all are try to write at a same time but here at a time only one thread writes.
+
+throughput controller:
+
+contolles how often of the percenatge of the load should execute. so that we can controll the throughput on a server.
+
+Random controller:
+
+piks any one of its child and execute
+
+random order controller:
+
+execute the threads in a random order.
+
+simple controller:
+
+just groups the elements for neat scripting
+
+once only controller: even the the thread is under a looping controller its skips the rules and runs only once.
+
+runtime controller: we can choose hoe much time it should run.
+
+recordning controller: captures broswer while doing recording with HTTP TEST SCROPT recorder
+
+interlative controller: loops up the childs in a series manner so that no thread will be free from execution.
+
+***LOg levels***
+
+OFF
+FATAL
+ERRORS
+WARN
+INFO
+DEBUG
+TRACE
+
+****
+
+How to upload and download file testing 
+
+file upload:
+
+in the sampler request we have to give the file path name and mime type of the file
+
+c:/user/data/jmeter/bin/1.text text/plain 
+c:/user/data/jmeter/bin/1.pdf application/pdf
+
+
+we can store in a CSV and upload bulk using the csv data set config.
+
+File download:
+
+save response to a file will show up the downlaoded files.
+
+think time: delay between the transcations which we can usually define with constant timer.
+pacing: delay between iterations which we can define using flow controller action sampler depend on the forumala we can add pacing
+
+
+
 
 
 ***Jmeter Functions***
@@ -393,10 +476,20 @@ String currentdate = formtatter.formate(date)
 Tis current date cariable we can give in the sampler with dolaler{currentdate}
 
 
+***server side profiling-Your kit profiling***
 
+CPU profiling - System CPU
+CPU + kernal
+overall CPU
 
+start an app and take snapshot or profiling the it generate results.
 
-
+Memory profilinh
+gc calls average
+gc call time
+heap memory
+non heap memory 
+snapshot  and profiling
 
 
 
