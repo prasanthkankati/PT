@@ -363,7 +363,34 @@ Environment Differences
 Production: 8-node server cluster, high-speed network, dedicated databases.
 Test: 2-node server cluster, lower-speed network, shared databases.
 
+beanshellscripting:
+apart from controllers we have and threadgroup we have all the elements
+from beanshell.
 
+beanshell sampler
+beanshell pre processor
+beanshell post processor
+beanshell timer
+beanshell listener
+
+beansgell preprocessor 
+
+we can execute some script
+and store it in a variable so that we can use that variable anywhere in the sampler name
+
+adding curremt date to the sampler title so that it will show 
+
+code
+we have to inport the java library pakages
+java.util.text.*
+java.util.date.*
+
+
+Date date=new Date();
+SimpleDateFormatter formatter=new SimpleDateFormatter(DD-MM-YY);
+String currentdate = formtatter.formate(date)
+
+Tis current date cariable we can give in the sampler with dolaler{currentdate}
 
 
 
