@@ -41,7 +41,7 @@ Listners- shows the request and reponse info like payload and reponse with diffr
 view results tree listner(not recommonded only use for debugging consumes much resources)- shows the rquest body nd reponse body, response headers, load time, connect time, message, status code.
 
 View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
-
+aew  `  
 Summary report:
 
 View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
@@ -490,6 +490,18 @@ gc call time
 heap memory
 non heap memory 
 snapshot  and profiling
+
+---------String to file--------------------------
+def filePath = "C:/JMeter/output/user_ids.txt"
+def file = new File(filePath)
+file << vars.get("userId") + System.lineSeparator()
+
+-----------String from file--------------------
+def filePath = "C:/JMeter/output/data.txt"
+def fileContent = new File(filePath).text.trim()
+vars.put("loadedData", fileContent) // now use ${loadedData} in your sampler
+
+
 
 
 
