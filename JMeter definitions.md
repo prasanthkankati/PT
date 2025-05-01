@@ -4,16 +4,26 @@
 jmeter-template: (pre configured test plan or a structure)adds a default structure to the testplan priorly so depend on the requirement we can choose the corresponding template. recording, recording with think time
 
 jmeter-toggle- enable and diables the selected elements
+
 jmeter start- start the testplan and executes
+
 jmeter start-no puse - ignore all the timers and execute the tests without any pause.
+
 jmeter stop- abruput ending- means-forcefully stop execution
+
 jmeter shutdown button- gracefull ending.means- once the current thread execution completed then it would stop
+
 jmeter clear button- clears the current element 
+
 jmeter clear all button - clears all the elements and refreshes.
+
 jmeter search- can search for elements
+
 jmeter reset serach- erases search
+
 jmeter function helper- can choose the function and generate the syntax and use from it
 jmtere help- opens the jmeter documentation
+
 -
 ***Thread grop***
 
