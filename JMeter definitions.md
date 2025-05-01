@@ -1,5 +1,8 @@
 *** Jmeter Tool UI***
+
+
 jmeter-template: (pre configured test plan or a structure)adds a default structure to the testplan priorly so depend on the requirement we can choose the corresponding template. recording, recording with think time
+
 jmeter-toggle- enable and diables the selected elements
 jmeter start- start the testplan and executes
 jmeter start-no puse - ignore all the timers and execute the tests without any pause.
