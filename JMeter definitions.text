@@ -835,3 +835,58 @@ vars.put("loadedData", fileContent) // now use ${loadedData} in your sampler
 
 
 
+
+
+
+Here’s a quick reference guide to common API HTTP status codes, grouped by category:
+
+⸻
+
+1xx – Informational
+	•	100 Continue: Server has received the request headers, and the client should proceed.
+	•	101 Switching Protocols: Request to switch protocols was accepted (e.g., HTTP to WebSocket).
+
+⸻
+
+2xx – Success
+	•	200 OK: Standard response for successful requests.
+	•	201 Created: Resource successfully created (common for POST requests).
+	•	202 Accepted: Request accepted but not yet processed.
+	•	204 No Content: Request succeeded, but no content is returned.
+
+⸻
+
+3xx – Redirection
+	•	301 Moved Permanently: Resource has been permanently moved to a new URL.
+	•	302 Found: Resource temporarily moved.
+	•	304 Not Modified: Cached version is still valid; no need to resend data.
+
+⸻
+
+4xx – Client Errors
+	•	400 Bad Request: Malformed request.
+	•	401 Unauthorized: Authentication required or failed.
+	•	403 Forbidden: Authenticated, but no permission to access the resource.
+	•	404 Not Found: Resource not found.
+	•	405 Method Not Allowed: HTTP method not supported for the resource.
+	•	409 Conflict: Request conflict (e.g., duplicate data).
+	•	429 Too Many Requests: Rate limiting has been triggered.
+
+⸻
+
+5xx – Server Errors
+	•	500 Internal Server Error: Generic server error.
+	•	501 Not Implemented: Functionality not supported by the server.
+	•	502 Bad Gateway: Invalid response from upstream server.
+	•	503 Service Unavailable: Server is overloaded or down for maintenance.
+	•	504 Gateway Timeout: Upstream server did not respond in time.
+
+⸻
+
+Would you like a printable cheat sheet or examples of how these are used in RESTful APIs?
+
+
+
+
+
+
