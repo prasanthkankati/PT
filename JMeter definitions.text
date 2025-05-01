@@ -73,8 +73,239 @@ Row 2: Threads=5000, Delay=5 min, Ramp-Up=120s, Hold=10 min, Shutdown=30s
 
 5. Arrival thread group - to simulate real time arrival on the app 250 users lauched in 30 minutes  
 
-***Timers***
+6. Setup Thread Group -
 
+Runs before the actual test — use for login, config, test prep.
+
+
+7. TearDown Thread Group - Runs after the test — use for logout, cleanup, or DB reset.
+
+Alright Prasanth, let's break down **Pre-Processors** and **Post-Processors** in JMeter—these are powerful tools for adding logic **before** and **after** your main samplers. Think of them as your test's "setup" and "cleanup" crew. 💡
+
+---
+
+***Pre-Processor***
+
+## ✅ What is a **Pre-Processor**?
+
+### 📌 **Purpose**:
+Executes **before** the sampler request. It’s used to:
+- Modify request data
+- Set dynamic parameters
+- Extract test data
+- Do calculations or logic
+
+### 🔧 **Where to use it**:
+Attach it to a **Sampler**, and it will run right before that Sampler fires.
+
+---
+
+## ✅ Types of Pre-Processors in JMeter:
+
+### 1. **User Parameters**
+- Set user-defined variables for each thread.
+- Good for assigning different values to different virtual users.
+
+**Example**:
+```plaintext
+name: ${__threadNum()}
+```
+
+---
+
+### 2. **HTML Link Parser**
+- Parses HTML and extracts embedded resources like images, CSS, JS.
+- Used with HTTP Samplers.
+
+---
+
+### 3. **HTTP URL Re-writing Modifier**
+- Appends session IDs to URLs.
+- Useful when dealing with web apps that don’t use cookies.
+
+---
+
+### 4. **BeanShell PreProcessor** (Legacy)  
+- Allows Java-based scripting using BeanShell.
+- Deprecated, prefer JSR223.
+
+---
+
+### 5. **JSR223 PreProcessor** ✅ *Most used*
+- Groovy scripting for dynamic logic (faster than BeanShell).
+- Can generate request bodies, tokens, or dynamic params.
+
+**Example**:
+```groovy
+def uuid = UUID.randomUUID().toString()
+vars.put("session_id", uuid)
+```
+
+---
+
+***Post-Processor***
+
+## ✅ What is a **Post-Processor**?
+
+### 📌 **Purpose**:
+Executes **after** the sampler request. It’s used to:
+- Extract data from responses
+- Parse HTML, JSON, XML
+- Store dynamic values for future use
+
+### 🔧 **Where to use it**:
+Attach it to a **Sampler**, and it will run right after that Sampler finishes.
+
+---
+
+## ✅ Types of Post-Processors in JMeter:
+
+### 1. **Regular Expression Extractor**
+- Extracts values using regex from the response.
+- Stores the result in a variable.
+
+**Example**: Extract token from JSON
+```json
+"token":"abc123"
+```
+
+Regex: `"token":"(.+?)"`
+
+---
+
+### 2. **JSON Extractor** ✅ *Most used*
+- Extract values from JSON using **JSONPath**.
+
+**Example**:
+```json
+{ "user": { "id": 101, "name": "Prasanth" } }
+```
+
+JSONPath: `$.user.id`
+
+---
+
+### 3. **XPath Extractor**
+- Extract from **XML or HTML** responses using XPath.
+
+**Example**:
+```xml
+<order><id>789</id></order>
+```
+
+XPath: `/order/id/text()`
+
+---
+
+### 4. **Debug PostProcessor**
+- Logs all variables and properties after a sampler.
+- Great for troubleshooting.
+
+---
+
+### 5. **JSR223 PostProcessor** ✅ *Powerful*
+- Groovy scripting for custom parsing or dynamic extraction.
+- Can save results to file, DB, etc.
+
+**Example**:
+```groovy
+def resp = prev.getResponseDataAsString()
+def json = new groovy.json.JsonSlurper().parseText(resp)
+vars.put("userId", json.user.id.toString())
+```
+
+---
+
+## 🧠 Key Differences Summary:
+
+| Feature | Pre-Processor | Post-Processor |
+|--------|----------------|----------------|
+| When it runs | Before sampler | After sampler |
+| Common use | Set request data, tokens | Extract values, store response parts |
+| Works with | Sampler input | Sampler output |
+| Can use script? | Yes (JSR223) | Yes (JSR223) |
+
+---
+
+***Samplers***
+
+Solid question, Prasanth! Here's how to send **HTTPS**, **FTP**, and **JDBC** requests using their respective **built-in samplers in JMeter**, step by step. No coding needed here—just config knowledge.
+
+---
+
+## ✅ 1. **HTTPS Request in JMeter (HTTP Request Sampler)**
+
+### 🔧 Steps:
+1. **Add Sampler**:  
+   `Thread Group` → Right-click → **Add → Sampler → HTTP Request**
+
+2. **Configure:**
+   - **Protocol**: `https`
+   - **Server Name or IP**: e.g., `api.example.com`
+   - **Port Number**: default is `443`
+   - **Method**: `GET`, `POST`, `PUT`, etc.
+   - **Path**: e.g., `/v1/user/details`
+   - Add parameters/body or headers as needed.
+
+
+---
+
+## ✅ 2. **FTP Request in JMeter (FTP Request Sampler)**
+
+### 🔧 Steps:
+1. **Add Sampler**:  
+   `Thread Group` → **Add → Sampler → FTP Request**
+
+2. **Configure:**
+   - **Server Name**: e.g., `ftp.example.com`
+   - **Remote File**: file path to upload/download
+   - **Port**: default is `21`
+   - **Username & Password**: your FTP credentials
+   - Choose either:
+     - **Upload a File**: provide `Local File`
+     - **Download a File**: leave `Local File` blank and it will read from remote
+
+3. **FTP Settings:**
+   - For **FTP over SSL (FTPS)**: Not directly supported in basic JMeter. You’ll need a **JSR223 Sampler with Apache Commons Net FTPClient** for advanced use.
+
+---
+
+## ✅ 3. **JDBC Request in JMeter (JDBC Request Sampler)**
+
+### 🔧 Steps:
+1. **Add JDBC Connection Config**:
+   `Thread Group` → **Add → Config Element → JDBC Connection Configuration**
+
+2. **Configure JDBC Config:**
+   - **Variable Name**: `mydb` (used later in JDBC Sampler)
+   - **Database URL**: depends on DB type:
+     - MySQL: `jdbc:mysql://hostname:3306/dbname`
+     - MSSQL: `jdbc:sqlserver://hostname:1433;databaseName=mydb`
+     - PostgreSQL: `jdbc:postgresql://hostname:5432/dbname`
+   - **JDBC Driver class**: (must match the DB)
+     - MySQL: `com.mysql.cj.jdbc.Driver`
+     - MSSQL: `com.microsoft.sqlserver.jdbc.SQLServerDriver`
+     - PostgreSQL: `org.postgresql.Driver`
+   - **Username / Password**: DB creds
+   - **Validation query**: `SELECT 1`
+
+3. **Add JDBC Sampler**:
+   `Thread Group` → **Add → Sampler → JDBC Request**
+
+4. **Configure Sampler:**
+   - **Variable Name**: must match above (`mydb`)
+   - **Query Type**: `Select Statement`, `Update`, `Callable`, etc.
+   - **SQL Query**: e.g.,
+     ```sql
+     SELECT name, email FROM users WHERE id=1;
+     ```
+
+5. **Add JDBC driver .jar**:
+   - Place the appropriate JDBC `.jar` file in `/lib` or `/lib/ext` folder of JMeter
+   - Restart JMeter
+
+
+***Timers***
 
 it adds a delay / think time between the requests
 
@@ -122,69 +353,6 @@ thread.sleep(3000)
 
 user all the thread arrival and adds delay up to all reached for arrival suitable for stepping thread group or step load.
 
-
-***Architecture***
-
-microservices based architecture : a big app will be hosted devided into its services and hosted individually.
-
-for mobile dialer app: 
-
-contacts service
-messages service
-serach service
-voicemail service
-AI transcription service
-
-
-
-***Jmeter-Listners***
-
-Listners- shows the request and reponse info like payload and reponse with diffrent metrics depend on the listerner we choose 
-
-view results tree listner(not recommonded only use for debugging consumes much resources)- shows the rquest body nd reponse body, response headers, load time, connect time, message, status code.
-
-View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
-aew  `  
-Summary report:
-
-View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
-
-grapgh results: avarage, median, throughput, deviation.
-
-simple data writer (for highload performance testing): if we upload the csv file in this listener it will append the results to it after the run.
-
-assertion results listner: this listener shows the asserion results passed or failed
-
-***
-
-*** Jmeter-Assertions***
-
-Assertion : it is check to valiadte the jmeter response
-
-types: 
-
-Response assertion: check the response message, status code, response text by comapring the actual and expected values.
-
-Duration assertion: checks the response duartion by provideing expected value in the assertion config part
-
-size assertion: checks the size in bytes and copare the expected size with actual
-XML assertion: checks if the response parsed into well formated xml format
-
-HTML assertion: jmeter response is formates using interner jmeter HTML parser so it checks for any errors or warnings exists in the HTML response parsed like broken tags, incompleted elemenents, structural errors. so we will provide threashhold error and warnings counts if actual error and warnings are more than expcted or provided it fails.
-
-Xpath assertion: it checksfor the nodes in the response which matches the provided xpath we can also store the matchings into afile using this, it no matches assertion fails.
-
-Json assertion:
-
-defaultly wont be there so we have to add a plugin-json to write a json expression user.id.job = "engineer" if it matches it pass.
-
-***Jmeter Variables***
-Variable stores the values which are defined by user.
-syntax: ${userName}
-Types: 
-1. Local variables: set under the thread level using config elements > user defined variables
-2. Global variables: defined in the testplan level 
-local variables override the global variables.
 
 ***Jmeter controllers***
 
@@ -236,6 +404,60 @@ recordning controller: captures broswer while doing recording with HTTP TEST SCR
 
 interlative controller: loops up the childs in a series manner so that no thread will be free from execution.
 
+
+*** Jmeter-Assertions***
+
+Assertion : it is check to valiadte the jmeter response
+
+types: 
+
+Response assertion: check the response message, status code, response text by comapring the actual and expected values.
+
+Duration assertion: checks the response duartion by provideing expected value in the assertion config part
+
+size assertion: checks the size in bytes and copare the expected size with actual
+
+XML assertion: checks if the response parsed into well formated xml format
+
+HTML assertion: jmeter response is formates using interner jmeter HTML parser so it checks for any errors or warnings exists in the HTML response parsed like broken tags, incompleted elemenents, structural errors. so we will provide threashhold error and warnings counts if actual error and warnings are more than expcted or provided it fails.
+
+Xpath assertion: it checksfor the nodes in the response which matches the provided xpath we can also store the matchings into afile using this, it no matches assertion fails.
+
+Json assertion:
+
+defaultly wont be there so we have to add a plugin-json to write a json expression user.id.job = "engineer" if it matches it pass.
+
+
+***Jmeter-Listners***
+
+Listners- shows the request and reponse info like payload and reponse with diffrent metrics depend on the listerner we choose 
+
+view results tree listner(not recommonded only use for debugging consumes much resources)- shows the rquest body nd reponse body, response headers, load time, connect time, message, status code.
+
+View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
+aew  `  
+Summary report:
+
+View results in table: sample#, start time, threadname, status, received bytes, sent bytes, error %, throughput.
+
+grapgh results: avarage, median, throughput, deviation.
+
+simple data writer (for highload performance testing): if we upload the csv file in this listener it will append the results to it after the run.
+
+assertion results listner: this listener shows the asserion results passed or failed
+
+***
+
+
+***Jmeter Variables***
+Variable stores the values which are defined by user.
+syntax: ${userName}
+Types: 
+1. Local variables: set under the thread level using config elements > user defined variables
+2. Global variables: defined in the testplan level 
+local variables override the global variables.
+
+
 ***LOg levels***
 
 OFF
@@ -247,6 +469,20 @@ DEBUG
 TRACE
 
 ****
+
+***Architecture***
+
+microservices based architecture : a big app will be hosted devided into its services and hosted individually.
+
+for mobile dialer app: 
+
+contacts service
+messages service
+serach service
+voicemail service
+AI transcription service
+
+***
 
 How to upload and download file testing 
 
@@ -266,9 +502,6 @@ save response to a file will show up the downlaoded files.
 
 think time: delay between the transcations which we can usually define with constant timer.
 pacing: delay between iterations which we can define using flow controller action sampler depend on the forumala we can add pacing
-
-
-
 
 
 ***Jmeter Functions***
@@ -308,12 +541,9 @@ once its done > start the server and give the command to connect slave IP> it sh
 testplan > threadgroup > sampler > config eklement > HTTP AUTHORIZATION MANGER > add base url , username, password, type basic 
 
 
-***post processing elements*** mostly used for corelation
-1. json extractor - we will copy the body of previous response and paste it in the json formatter > we will identify the path of an element text and store it in a variable to use in subsequent requests. json path expression may look like $data.[0]id.first_name
-
-2. regular expression extractor
-
 ***Thread***
+
+
 Programm contain a process and it process includes threads.
 multiple proceess includes multiple threads.
 monotoring thread helath is required to identify bottlenecks.
@@ -331,6 +561,7 @@ using jstack(Jstack <PID> threaddump.txt ),visual VM
 we can do the thread dump analysis manually by observing the cpu utilization time and status or we can use the tools like fast thread by uploading the threaddump file in the tools.
 
 ***Heap***
+
 it is a memory occumpied by the object and its references.
 GC: garabage collector it is a process or program to clear or kill the unused objects so that there will be a memory for new objects.
 
@@ -538,8 +769,6 @@ poor garbage collection: causes low performance in long run.
 poor threading mechanisim: scalability will be slow
 
 
-
-
 TTFB: 
 Time to First Byte (TTFB): DNS lookup time+connection time+processing time.
 Amount of time it takes for a user's web browser to receive the first byte of data from the
@@ -603,15 +832,6 @@ file << vars.get("userId") + System.lineSeparator()
 def filePath = "C:/JMeter/output/data.txt"
 def fileContent = new File(filePath).text.trim()
 vars.put("loadedData", fileContent) // now use ${loadedData} in your sampler
-
-
-
-
-
-
-
-
-
 
 
 
