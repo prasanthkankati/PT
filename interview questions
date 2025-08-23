@@ -1,0 +1,20 @@
+
+same test second time run cheste cpu utility oka percent increase ayidni why?
+
+CPU consumption second time ekkuva avvadanki chala reasons untayi. Short ga cheppalante 👇
+	1.	Caching differences – First run lo JVM, JMeter libraries, classes cache avutayi. Second run lo extra GC (Garbage Collection) work jaragachu.
+	2.	Listeners enabled – Graph Results, View Results Tree laanti listeners open ga unte, next run lo ekkuva data accumulate ayyi CPU load perigedi.
+	3.	Thread cleanup incomplete – First test complete avvaka threads/buffers properly release kakapothe, second run lo overlap avutundi.
+	4.	GC pressure – First run taruvata heap fill ayi, second run lo GC cycles frequent ga kick in avvachu.
+	5.	Background system load – OS/Scheduler CPU lo inka vere processes run ayyi ekkuva usage chupinchavachu.
+	6.	Test Data / Response size differences – Second run lo server nundi vachina response payload ekkuva unte, JMeter parsing ki CPU usage ekkuva avutundi.
+
+👉 Fix kosam:
+	•	Unused listeners close cheyyi.
+	•	JMeter restart chesi fresh run cheyyi (CPU stabilize avutundi).
+	•	Heap size (-Xms, -Xmx) adjust cheyyi.
+	•	Only required samplers data log cheyyi.
+
+
+
+
